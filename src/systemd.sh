@@ -26,6 +26,7 @@ User=root
 NoNewPrivileges=true
 ExecStart=$is_core_bin run -c $is_config_json -C $is_conf_dir
 Restart=on-failure
+RestartSec=5s
 RestartPreventExitStatus=23
 LimitNPROC=10000
 LimitNOFILE=1048576
@@ -52,6 +53,8 @@ User=root
 Group=root
 ExecStart=$is_caddy_bin run --environ --config $is_caddyfile --adapter caddyfile
 ExecReload=$is_caddy_bin reload --config $is_caddyfile --adapter caddyfile
+Restart=on-failure
+RestartSec=5s
 TimeoutStopSec=5s
 LimitNPROC=10000
 LimitNOFILE=1048576
@@ -64,9 +67,9 @@ WantedBy=multi-user.target"
         ;;
     esac
 
-    # enable, reload
-    systemctl enable $1
+    # 【优化】先 reload 让 systemd 识别新文件，再 enable 设置开机自启
     systemctl daemon-reload
+    systemctl enable $1
 }
 
 install_service_openrc() {
@@ -80,12 +83,14 @@ description="$is_core_name Service"
 
 command="$is_core_bin"
 command_args="run -c $is_config_json -C $is_conf_dir"
-command_background=true
+# 【修复】删除了 command_background=true，避免与 supervise-daemon 冲突
 pidfile="/run/\${RC_SVCNAME}.pid"
 output_log="/var/log/$is_core/access.log"
 error_log="/var/log/$is_core/error.log"
 
 supervisor=supervise-daemon
+respawn_delay=5
+respawn_max=0
 
 depend() {
     need net
@@ -103,10 +108,12 @@ description="Caddy web server"
 
 command="$is_caddy_bin"
 command_args="run --environ --config $is_caddyfile --adapter caddyfile"
-command_background=true
+# 【修复】删除了 command_background=true，避免与 supervise-daemon 冲突
 pidfile="/run/\${RC_SVCNAME}.pid"
 
 supervisor=supervise-daemon
+respawn_delay=5
+respawn_max=0
 
 depend() {
     need net
