@@ -1272,7 +1272,7 @@ get() {
         json_str="$is_users,$is_json_add"
         ;;
     host-test) # test host dns record; for auto *tls required.
-        [[ $is_no_auto_tls || $is_gen || $is_dont_test_host ]] && return
+        return
         get_ip
         get ping
         if [[ ! $(grep $ip <<<$is_host_dns) ]]; then
