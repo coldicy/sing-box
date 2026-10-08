@@ -13,6 +13,7 @@ caddy_config() {
   admin off
   http_port $is_http_port
   https_port $is_https_port
+  auto_https off  # 【新增】全局禁用自动 HTTPS 和证书申请
 }
 import $is_caddy_conf/*.conf
 import $is_caddy_dir/sites/*.conf
