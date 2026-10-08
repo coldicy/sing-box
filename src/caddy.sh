@@ -22,6 +22,9 @@ EOF
     *ws* | *http*)
         cat >${is_caddy_site_file} <<<"
 ${host}:${is_https_port} {
+    # 【新增】强制指定本地证书路径
+    tls /etc/ssl/fullchain.pem /etc/ssl/private.key
+
     reverse_proxy ${path} 127.0.0.1:${port}
     import ${is_caddy_site_file}.add
 }"
@@ -29,6 +32,9 @@ ${host}:${is_https_port} {
     *h2*)
         cat >${is_caddy_site_file} <<<"
 ${host}:${is_https_port} {
+    # 【新增】强制指定本地证书路径
+    tls /etc/ssl/fullchain.pem /etc/ssl/private.key
+
     reverse_proxy ${path} h2c://127.0.0.1:${port} {
         transport http {
 			tls_insecure_skip_verify
@@ -40,6 +46,9 @@ ${host}:${is_https_port} {
     *grpc*)
         cat >${is_caddy_site_file} <<<"
 ${host}:${is_https_port} {
+    # 【新增】强制指定本地证书路径
+    tls /etc/ssl/fullchain.pem /etc/ssl/private.key
+    
     reverse_proxy /${path}/* h2c://127.0.0.1:${port}
     import ${is_caddy_site_file}.add
 }"
