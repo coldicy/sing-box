@@ -12,11 +12,67 @@ caddy_config() {
         if [[ ! -f "$masquerade_dir/index.html" ]]; then
             cat >$masquerade_dir/index.html <<-EOF
 <!DOCTYPE html>
-<html>
-<head><title>Welcome</title></head>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="/icon.svg" type="image/svg+xml">
+<title>COLDORA|Intelligent Technology</title>
+<meta name="description" content="COLDORA focuses on cloud infrastructure, intelligent systems and next-generation technology solutions.">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;background:#0b1020;color:#fff}
+header{height:80px;display:flex;justify-content:space-between;align-items:center;padding:0 8%;border-bottom:1px solid rgba(255,255,255,.08)}
+.logo{font-size:24px;font-weight:700;letter-spacing:2px}
+nav a{color:#aaa;text-decoration:none;margin-left:30px;font-size:14px}
+nav a:hover{color:white}
+.hero{min-height:650px;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:40px}
+.hero h1{font-size:64px;background:linear-gradient(90deg,#4facfe,#00f2fe);-webkit-background-clip:text;color:transparent}
+.hero p{margin-top:25px;max-width:650px;color:#aaa;font-size:18px;line-height:1.8}
+.button{margin-top:40px;display:inline-block;padding:14px 40px;border-radius:30px;background:#fff;color:#111;text-decoration:none;font-weight:600}
+.section{padding:80px 8%}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:25px}
+.card{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);border-radius:20px;padding:35px}
+.card h3{margin-bottom:15px}
+.card p{color:#aaa;line-height:1.7}
+.status{margin-top:20px;display:inline-block;padding:6px 15px;border-radius:20px;background:#123;color:#4cff8f;font-size:13px}
+footer{text-align:center;padding:40px;color:#666;border-top:1px solid rgba(255,255,255,.08)}
+@media(max-width:700px){.hero h1{font-size:42px}nav{display:none}}
+</style>
+</head>
 <body>
-    <h1>It works!</h1>
-    <p>This is a default masquerade page.</p>
+<header>
+<div class="logo">COLDORA</div>
+<nav>
+<a href="#">Home</a>
+<a href="#">Solutions</a>
+<a href="#">About</a>
+<a href="#">Contact</a>
+</nav>
+</header>
+<section class="hero">
+<h1>Building Future Digital Infrastructure</h1>
+<p>We design reliable cloud-native systems,intelligent platforms and scalable technology solutions for the next generation of applications.</p>
+<a class="button" href="#">Explore More</a>
+<span class="status">●All Systems Operational</span>
+</section>
+<section class="section">
+<div class="cards">
+<div class="card">
+<h3>Cloud Infrastructure</h3>
+<p>High performance distributed systems,secure networking architecture and global availability solutions.</p>
+</div>
+<div class="card">
+<h3>Artificial Intelligence</h3>
+<p>Researching intelligent automation,machine learning applications and modern computing technologies.</p>
+</div>
+<div class="card">
+<h3>Developer Platform</h3>
+<p>Powerful tools and APIs designed for developers building future products.</p>
+</div>
+</div>
+</section>
+<footer>©2026 COLDORA Technologies.All rights reserved.</footer>
 </body>
 </html>
 EOF
