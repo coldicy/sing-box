@@ -1,6 +1,10 @@
 caddy_config() {
     is_caddy_site_file=$is_caddy_conf/${host}.conf
     
+    # 【新增兜底】防止变量意外为空导致 Caddy 启动失败
+    is_cert_path=${is_cert_path:-/etc/ssl/sing-box/fullchain.pem}
+    is_key_path=${is_key_path:-/etc/ssl/sing-box/private.key}
+    
     # 【新增】定义本地伪装网页的存放目录
     local masquerade_dir="/var/www/html/masquerade"
     
@@ -97,8 +101,8 @@ EOF
     *ws* | *http*)
         cat >${is_caddy_site_file} <<<"
 ${host}:${is_https_port} {
-    # 【新增】强制指定本地证书路径
-    tls /etc/ssl/fullchain.pem /etc/ssl/private.key
+    # 【修改】使用变量替换写死的路径
+    tls ${is_cert_path} ${is_key_path}
 
     # 1. 匹配节点专属路径，转发给 sing-box
     handle ${path} {
@@ -117,8 +121,8 @@ ${host}:${is_https_port} {
     *h2*)
         cat >${is_caddy_site_file} <<<"
 ${host}:${is_https_port} {
-    # 【新增】强制指定本地证书路径
-    tls /etc/ssl/fullchain.pem /etc/ssl/private.key
+    # 【修改】使用变量
+    tls ${is_cert_path} ${is_key_path}
 
     handle ${path} {
         reverse_proxy h2c://127.0.0.1:${port} {
@@ -140,8 +144,8 @@ ${host}:${is_https_port} {
     *grpc*)
         cat >${is_caddy_site_file} <<<"
 ${host}:${is_https_port} {
-    # 【新增】强制指定本地证书路径
-    tls /etc/ssl/fullchain.pem /etc/ssl/private.key
+    # 【修改】使用变量
+    tls ${is_cert_path} ${is_key_path}
     
     handle /${path}/* {
         reverse_proxy h2c://127.0.0.1:${port}
