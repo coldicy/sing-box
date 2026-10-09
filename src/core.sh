@@ -1010,17 +1010,34 @@ add() {
         # set host
         [[ ! $host ]] && ask string host "请输入域名:"
 
-        # 【新增】只有在使用 Caddy 时，才询问本地证书路径
+        # 【新增】智能证书检测：优先使用默认路径，找不到才询问
         if [[ ! $is_no_auto_tls ]]; then
-            msg
-            # -e 参数允许用户使用 Tab 键自动补全路径，非常方便
-            read -e -p "请输入证书公钥路径 (直接回车默认 /etc/ssl/sing-box/fullchain.pem): " input_cert
-            is_cert_path=${input_cert:-/etc/ssl/sing-box/fullchain.pem}
-            msg "使用: $is_cert_path"
-            
-            read -e -p "请输入证书私钥路径 (直接回车默认 /etc/ssl/sing-box/private.key): " input_key
-            is_key_path=${input_key:-/etc/ssl/sing-box/private.key}
-            msg "使用: $is_key_path"
+            local default_cert="/etc/ssl/sing-box/fullchain.pem"
+            local default_key="/etc/ssl/sing-box/private.key"
+
+            # 检查默认路径是否同时存在证书和私钥
+            if [[ -f "$default_cert" && -f "$default_key" ]]; then
+                msg
+                _green "检测到默认路径已有证书，自动使用本地证书配置 TLS..."
+                is_cert_path="$default_cert"
+                is_key_path="$default_key"
+                msg "使用公钥: $is_cert_path"
+                msg "使用私钥: $is_key_path"
+            else
+                msg
+                _yellow "未在默认路径找到完整的证书和私钥，需手动指定..."
+                msg "(提示: 提前将证书放在 $default_cert 和 $default_key 可实现全自动静默安装)"
+                msg
+                
+                # -e 参数允许用户使用 Tab 键自动补全路径
+                read -e -p "请输入证书公钥路径 (直接回车默认 $default_cert): " input_cert
+                is_cert_path=${input_cert:-$default_cert}
+                msg "使用: $is_cert_path"
+                
+                read -e -p "请输入证书私钥路径 (直接回车默认 $default_key): " input_key
+                is_key_path=${input_key:-$default_key}
+                msg "使用: $is_key_path"
+            fi
         fi
 
         # test host dns
