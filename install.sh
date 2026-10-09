@@ -454,7 +454,7 @@ main() {
     # wait for background tasks (e.g., OpenRC service start)
     wait
     # create a vless+ws+tls config
-    add vws
+    sb add vws
     # wait for background tasks (e.g., OpenRC service start)
     wait
     # remove tmp dir and exit.
