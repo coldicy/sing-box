@@ -1009,6 +1009,20 @@ add() {
         fi
         # set host
         [[ ! $host ]] && ask string host "请输入域名:"
+
+        # 【新增】只有在使用 Caddy 时，才询问本地证书路径
+        if [[ ! $is_no_auto_tls ]]; then
+            msg
+            # -e 参数允许用户使用 Tab 键自动补全路径，非常方便
+            read -e -p "请输入证书公钥路径 (直接回车默认 /etc/ssl/sing-box/fullchain.pem): " input_cert
+            is_cert_path=${input_cert:-/etc/ssl/sing-box/fullchain.pem}
+            msg "使用: $is_cert_path"
+            
+            read -e -p "请输入证书私钥路径 (直接回车默认 /etc/ssl/sing-box/private.key): " input_key
+            is_key_path=${input_key:-/etc/ssl/sing-box/private.key}
+            msg "使用: $is_key_path"
+        fi
+
         # test host dns
         get host-test
     else
