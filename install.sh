@@ -450,7 +450,9 @@ main() {
 
     load core.sh
     # create a reality config
-    add reality
+    add reality 8443
+    # create a vless+ws+tls config
+    add vws
     # wait for background tasks (e.g., OpenRC service start)
     wait
     # remove tmp dir and exit.
