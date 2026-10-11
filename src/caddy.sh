@@ -109,7 +109,12 @@ ${host}:${is_https_port} {
         reverse_proxy 127.0.0.1:${port}
     }
 
-    # 2. 【新增】匹配其他所有请求，展示本地伪装网页
+    # 2. 【新增】健康检查接口
+    handle /generate_204 {
+        respond 204
+    }
+
+    # 3. 匹配其他所有请求，展示本地伪装网页
     handle {
         root * ${masquerade_dir}
         file_server
@@ -132,7 +137,12 @@ ${host}:${is_https_port} {
         }
     }
 
-    # 【新增】本地伪装
+    # 【新增】健康检查接口
+    handle /generate_204 {
+        respond 204
+    }
+
+    # 本地伪装
     handle {
         root * ${masquerade_dir}
         file_server
@@ -151,7 +161,12 @@ ${host}:${is_https_port} {
         reverse_proxy h2c://127.0.0.1:${port}
     }
 
-    # 【新增】本地伪装
+    # 【新增】健康检查接口
+    handle /generate_204 {
+        respond 204
+    }
+
+    # 本地伪装
     handle {
         root * ${masquerade_dir}
         file_server
