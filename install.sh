@@ -450,7 +450,7 @@ main() {
 
     load core.sh
     # create a reality config
-    add reality 28443 db2de0ae-0637-4372-be0b-341400ac552d
+    add reality 28443
     # wait for background tasks (e.g., OpenRC service start)
     wait
     # create a hy2 config
