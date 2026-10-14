@@ -453,10 +453,6 @@ main() {
     add reality 28443
     # wait for background tasks (e.g., OpenRC service start)
     wait
-    # create a hy2 config
-    sb add hy2 28442 6ace3174-8af9-4883-9b53-707f96977ee8
-    # wait for background tasks (e.g., OpenRC service start)
-    wait
     # create a vless+ws+tls config
     sb add vws auto 4e340ed7-0c26-4790-99ab-b302839a7f9c
     # wait for background tasks (e.g., OpenRC service start)
